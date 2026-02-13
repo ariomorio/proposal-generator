@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { generateProposalMarkdown } from '../../utils/markdownGenerator';
+import { collectImages } from '../../utils/imageCollector';
 
 /**
  * MarkdownPreview — Shows generated Markdown and provides download
@@ -9,6 +10,10 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
 
     const markdown = useMemo(() => {
         return generateProposalMarkdown(formData, chapters);
+    }, [formData, chapters]);
+
+    const images = useMemo(() => {
+        return collectImages(formData, chapters);
     }, [formData, chapters]);
 
     const hasErrors = errors && Object.keys(errors).length > 0;
@@ -41,6 +46,19 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
         }
     };
 
+    const downloadImage = (image) => {
+        const a = document.createElement('a');
+        a.href = image.dataUrl;
+        a.download = image.fileName;
+        a.click();
+    };
+
+    const downloadAllImages = () => {
+        images.forEach((img, i) => {
+            setTimeout(() => downloadImage(img), i * 300); // stagger downloads
+        });
+    };
+
     const copyToClipboard = async () => {
         try {
             await navigator.clipboard.writeText(markdown);
@@ -56,7 +74,7 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
             <div className="markdown-preview-header">
                 <h2 className="preview-title">📄 Markdown出力</h2>
                 <p className="preview-subtitle">
-                    NotebookLMにデータセットとしてアップロードするMarkdownファイルを生成します
+                    NotebookLMにデータセットとしてアップロードするファイルを生成します
                 </p>
             </div>
 
@@ -70,7 +88,7 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
             <div className="download-section">
                 <h3 className="download-section-title">📥 ファイルダウンロード</h3>
                 <p className="download-description">
-                    以下の2つのファイルをNotebookLMにアップロードしてください
+                    以下のファイルをNotebookLMにアップロードしてください
                 </p>
 
                 <div className="download-cards">
@@ -97,6 +115,41 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
                     </div>
                 </div>
             </div>
+
+            {/* Image Export Section */}
+            {images.length > 0 && (
+                <div className="download-section image-export-section">
+                    <div className="image-export-header">
+                        <h3 className="download-section-title">🖼️ 画像ファイル ({images.length}枚)</h3>
+                        <button className="btn btn-primary btn-sm" onClick={downloadAllImages}>
+                            すべてダウンロード
+                        </button>
+                    </div>
+                    <p className="download-description">
+                        これらの画像もNotebookLMにソースとしてアップロードしてください
+                    </p>
+
+                    <div className="image-export-grid">
+                        {images.map((img, i) => (
+                            <div key={i} className="image-export-item">
+                                <div className="image-export-preview">
+                                    <img src={img.dataUrl} alt={img.label} />
+                                </div>
+                                <div className="image-export-info">
+                                    <span className="image-export-label">{img.label}</span>
+                                    <span className="image-export-filename">{img.fileName}</span>
+                                </div>
+                                <button
+                                    className="btn btn-secondary btn-sm"
+                                    onClick={() => downloadImage(img)}
+                                >
+                                    💾
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Markdown Preview */}
             <div className="markdown-content-section">

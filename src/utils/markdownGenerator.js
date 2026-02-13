@@ -3,6 +3,7 @@
  * for use as a NotebookLM data source.
  */
 import { formatNumber, formatCurrency, calculateEstimatedSales } from './calculations';
+import { collectImages, generateImageReferences } from './imageCollector';
 
 /**
  * Generate the full proposal Markdown document
@@ -43,6 +44,13 @@ export function generateProposalMarkdown(formData, chapters) {
 
     // Contact (always included)
     sections.push(generateContactSection(formData.contact));
+
+    // Image references (if any images uploaded)
+    const images = collectImages(formData, chapters);
+    const imageSection = generateImageReferences(images);
+    if (imageSection) {
+        sections.push(imageSection);
+    }
 
     return sections.filter(Boolean).join('\n\n---\n\n');
 }

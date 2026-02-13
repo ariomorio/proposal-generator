@@ -591,6 +591,81 @@
   margin: 0;
 }
 
+/* Image Export Section */
+.image-export-section {
+  border-color: rgba(212, 175, 55, 0.2);
+}
+
+.image-export-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.image-export-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.image-export-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+  transition: all var(--transition-fast);
+}
+
+.image-export-item:hover {
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.image-export-preview {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid var(--border-color);
+}
+
+.image-export-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-export-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.image-export-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.image-export-filename {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-sm {
+  font-size: var(--font-size-sm) !important;
+  padding: 0.4rem 0.75rem !important;
+}
+
 /* ---- Footer ---- */
 .app-footer {
   text-align: center;
