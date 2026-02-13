@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { generateProposalMarkdown } from '../../utils/markdownGenerator';
 import { collectImages } from '../../utils/imageCollector';
+import designGuideRaw from '../../data/design_guide.md?raw';
 
 /**
  * MarkdownPreview — Shows generated Markdown and provides download
@@ -30,20 +31,14 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
         URL.revokeObjectURL(url);
     };
 
-    const downloadDesignGuide = async () => {
-        try {
-            const res = await fetch('/design_guide.md');
-            const text = await res.text();
-            const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'design_guide.md';
-            a.click();
-            URL.revokeObjectURL(url);
-        } catch (err) {
-            console.error('Design guide download failed:', err);
-        }
+    const downloadDesignGuide = () => {
+        const blob = new Blob([designGuideRaw], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'design_guide.md';
+        a.click();
+        URL.revokeObjectURL(url);
     };
 
     const downloadImage = (image) => {
