@@ -486,6 +486,37 @@
   font-size: var(--font-size-sm);
 }
 
+/* NotebookLM Link */
+.notebooklm-link-section {
+  display: flex;
+  justify-content: center;
+}
+
+.notebooklm-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: var(--radius-full);
+  color: var(--accent-gold-light);
+  font-weight: 600;
+  font-size: var(--font-size-md);
+  text-decoration: none;
+  transition: all var(--transition-normal);
+}
+
+.notebooklm-link:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: var(--accent-gold);
+  box-shadow: var(--shadow-glow-gold);
+}
+
+.notebooklm-link-icon {
+  font-size: 1.3rem;
+}
+
 /* Download Section */
 .download-section {
   background: rgba(255, 255, 255, 0.03);

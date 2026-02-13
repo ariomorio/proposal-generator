@@ -79,11 +79,19 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
                 </div>
             )}
 
+            {/* NotebookLM Link */}
+            <div className="notebooklm-link-section">
+                <a href="https://notebooklm.google.com/" target="_blank" rel="noopener noreferrer" className="notebooklm-link">
+                    <span className="notebooklm-link-icon">📒</span>
+                    <span>NotebookLM を開く →</span>
+                </a>
+            </div>
+
             {/* Download Buttons */}
             <div className="download-section">
                 <h3 className="download-section-title">📥 ファイルダウンロード</h3>
                 <p className="download-description">
-                    以下のファイルをNotebookLMにアップロードしてください
+                    以下のファイルをダウンロード後、NotebookLMにソースとしてアップロードしてください
                 </p>
 
                 <div className="download-cards">
