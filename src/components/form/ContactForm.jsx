@@ -14,20 +14,20 @@ export default function ContactForm({ data, onChange, errors = {} }) {
             <div className="form-grid">
                 <div className="form-group">
                     <label className="form-label">メールアドレス<span className="required">*</span></label>
-                    <input className="form-input" type="email" placeholder="例: lalacilelo.ah@gmail.com"
+                    <input className="form-input" type="email" placeholder="例: info@example.com"
                         value={data.email} onChange={(e) => update('email', e.target.value)} />
                     {errors.email && <span className="form-error">⚠ {errors.email}</span>}
                 </div>
 
                 <div className="form-group">
                     <label className="form-label">SNSアカウント / 屋号（任意）</label>
-                    <input className="form-input" placeholder="例: @chikos_fukuoka"
+                    <input className="form-input" placeholder="例: @taro_tokyo"
                         value={data.snsHandle} onChange={(e) => update('snsHandle', e.target.value)} />
                 </div>
 
                 <div className="form-group">
                     <label className="form-label">屋号 / 事業名（任意）</label>
-                    <input className="form-input" placeholder="例: chiko's | 福岡グルメ"
+                    <input className="form-input" placeholder="例: taro's kitchen | 東京グルメ"
                         value={data.businessName} onChange={(e) => update('businessName', e.target.value)} />
                 </div>
             </div>

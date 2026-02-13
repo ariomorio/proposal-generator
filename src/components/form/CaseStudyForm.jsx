@@ -85,7 +85,7 @@ export default function CaseStudyForm({ data, onChange, errors = {} }) {
                         <div className="form-grid">
                             <div className="form-group">
                                 <label className="form-label">案件名<span className="required">*</span></label>
-                                <input className="form-input" placeholder="例: 博多駅近く居酒屋"
+                                <input className="form-input" placeholder="例: 渋谷カフェ体験レポ"
                                     value={cs.name} onChange={(e) => updateCase(i, 'name', e.target.value)} />
                                 {csErrors.name && <span className="form-error">⚠ {csErrors.name}</span>}
                             </div>

@@ -22,7 +22,7 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
     const downloadMarkdown = () => {
         const accountName = formData.cover?.accountName || 'proposal';
         const fileName = `${accountName}_proposal_data.md`;
-        const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
+        const blob = new Blob([markdown], { type: 'application/octet-stream' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -32,7 +32,7 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
     };
 
     const downloadDesignGuide = () => {
-        const blob = new Blob([designGuideRaw], { type: 'text/markdown;charset=utf-8' });
+        const blob = new Blob([designGuideRaw], { type: 'application/octet-stream' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;

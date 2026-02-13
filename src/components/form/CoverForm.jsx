@@ -35,7 +35,7 @@ export default function CoverForm({ data, onChange, errors = {} }) {
             <div className="form-grid">
                 <div className="form-group">
                     <label className="form-label">アカウント名<span className="required">*</span></label>
-                    <input className="form-input" placeholder="例: chiko's | 福岡グルメ🥢"
+                    <input className="form-input" placeholder="例: taro's kitchen | 東京グルメ🥢"
                         value={data.accountName} onChange={(e) => update('accountName', e.target.value)} />
                     {errors.accountName && <span className="form-error">⚠ {errors.accountName}</span>}
                 </div>
