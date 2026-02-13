@@ -40,9 +40,9 @@ export default function FlowForm({ data, onChange }) {
                     <label className="form-label">支払い方法</label>
                     {data.paymentMethods.map((pm, i) => (
                         <div key={i} className="payment-row">
-                            <input className="form-input" placeholder="方法"
+                            <input className="form-input" placeholder={`方法名 (例: ${i === 0 ? '現金' : '銀行振込'})`}
                                 value={pm.method} onChange={(e) => updatePayment(i, 'method', e.target.value)} />
-                            <textarea className="form-textarea" placeholder="詳細"
+                            <textarea className="form-textarea" placeholder={`詳細 (例: ${i === 0 ? 'ご来店時にお支払い' : '請求書をお送りします'})`}
                                 value={pm.note} onChange={(e) => updatePayment(i, 'note', e.target.value)}
                                 rows={2} />
                         </div>

@@ -128,11 +128,27 @@ body {
   transition: all var(--transition-fast);
 }
 
-.form-input:focus {
+.form-input:focus,
+.form-textarea:focus {
   outline: none;
   border-color: var(--accent-gold);
   box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
   background: rgba(255, 255, 255, 0.08);
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  transition: all var(--transition-fast);
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.6;
 }
 
 .form-label {
