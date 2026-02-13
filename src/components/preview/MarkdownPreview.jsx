@@ -1,13 +1,15 @@
 import React, { useMemo, useState } from 'react';
 import { generateProposalMarkdown } from '../../utils/markdownGenerator';
 import { collectImages } from '../../utils/imageCollector';
+import { generateProposalPDF } from '../../utils/pdfGenerator';
 import designGuideRaw from '../../data/design_guide.md?raw';
 
 /**
- * MarkdownPreview — Shows generated Markdown and provides download
+ * MarkdownPreview — Shows generated output and provides download options
  */
 export default function MarkdownPreview({ formData, chapters, errors }) {
     const [copied, setCopied] = useState(false);
+    const [generating, setGenerating] = useState(false);
 
     const markdown = useMemo(() => {
         return generateProposalMarkdown(formData, chapters);
@@ -19,6 +21,21 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
 
     const hasErrors = errors && Object.keys(errors).length > 0;
 
+    // ===== PDF Download (Primary) =====
+    const downloadPDF = async () => {
+        setGenerating(true);
+        try {
+            const accountName = formData.cover?.accountName || 'proposal';
+            await generateProposalPDF(markdown, designGuideRaw, images, accountName);
+        } catch (err) {
+            console.error('PDF generation failed:', err);
+            alert('PDF生成に失敗しました。もう一度お試しください。');
+        } finally {
+            setGenerating(false);
+        }
+    };
+
+    // ===== MD Downloads (Secondary) =====
     const downloadMarkdown = () => {
         const accountName = formData.cover?.accountName || 'proposal';
         const fileName = `${accountName}_proposal_data.md`;
@@ -41,19 +58,6 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
         URL.revokeObjectURL(url);
     };
 
-    const downloadImage = (image) => {
-        const a = document.createElement('a');
-        a.href = image.dataUrl;
-        a.download = image.fileName;
-        a.click();
-    };
-
-    const downloadAllImages = () => {
-        images.forEach((img, i) => {
-            setTimeout(() => downloadImage(img), i * 300); // stagger downloads
-        });
-    };
-
     const copyToClipboard = async () => {
         try {
             await navigator.clipboard.writeText(markdown);
@@ -67,9 +71,9 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
     return (
         <div className="markdown-preview-container">
             <div className="markdown-preview-header">
-                <h2 className="preview-title">📄 Markdown出力</h2>
+                <h2 className="preview-title">📄 NotebookLM用データ出力</h2>
                 <p className="preview-subtitle">
-                    NotebookLMにデータセットとしてアップロードするファイルを生成します
+                    提案データ・デザインガイド・画像を1つのPDFにまとめてダウンロードできます
                 </p>
             </div>
 
@@ -87,51 +91,69 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
                 </a>
             </div>
 
-            {/* Download Buttons */}
-            <div className="download-section">
-                <h3 className="download-section-title">📥 ファイルダウンロード</h3>
+            {/* Primary: PDF Download */}
+            <div className="download-section pdf-primary-section">
+                <h3 className="download-section-title">📥 PDF一括ダウンロード</h3>
                 <p className="download-description">
-                    以下のファイルをダウンロード後、NotebookLMにソースとしてアップロードしてください
+                    提案データ + デザインガイド + 画像をすべて含んだPDFを生成します。
+                    このファイルをNotebookLMにアップロードしてください。
                 </p>
 
                 <div className="download-cards">
-                    <div className="download-card">
-                        <div className="download-card-icon">📊</div>
-                        <h4 className="download-card-title">提案データ</h4>
+                    <div className="download-card pdf-card">
+                        <div className="download-card-icon">📑</div>
+                        <h4 className="download-card-title">一括PDF</h4>
                         <p className="download-card-desc">
-                            入力した情報を構造化したMarkdownファイル
+                            全データ・画像を1つのPDFにまとめてダウンロード
                         </p>
-                        <button className="btn btn-primary" onClick={downloadMarkdown}>
-                            ダウンロード (.md)
-                        </button>
-                    </div>
-
-                    <div className="download-card">
-                        <div className="download-card-icon">🎨</div>
-                        <h4 className="download-card-title">デザインガイド</h4>
-                        <p className="download-card-desc">
-                            参考元PDFのデザイン情報をまとめたガイド
-                        </p>
-                        <button className="btn btn-secondary" onClick={downloadDesignGuide}>
-                            ダウンロード (.md)
+                        <button
+                            className="btn btn-primary btn-lg"
+                            onClick={downloadPDF}
+                            disabled={generating}
+                        >
+                            {generating ? '⏳ 生成中...' : 'PDFをダウンロード'}
                         </button>
                     </div>
                 </div>
             </div>
 
-            {/* Image Export Section */}
-            {images.length > 0 && (
-                <div className="download-section image-export-section">
-                    <div className="image-export-header">
-                        <h3 className="download-section-title">🖼️ 画像ファイル ({images.length}枚)</h3>
-                        <button className="btn btn-primary btn-sm" onClick={downloadAllImages}>
-                            すべてダウンロード
-                        </button>
-                    </div>
-                    <p className="download-description">
-                        これらの画像もNotebookLMにソースとしてアップロードしてください
-                    </p>
+            {/* Secondary: Individual MD Downloads */}
+            <details className="secondary-downloads">
+                <summary className="secondary-downloads-toggle">
+                    📂 個別ファイルダウンロード（MD形式）
+                </summary>
+                <div className="download-section secondary-section">
+                    <div className="download-cards">
+                        <div className="download-card">
+                            <div className="download-card-icon">📊</div>
+                            <h4 className="download-card-title">提案データ</h4>
+                            <p className="download-card-desc">
+                                入力した情報を構造化したMarkdownファイル
+                            </p>
+                            <button className="btn btn-secondary" onClick={downloadMarkdown}>
+                                ダウンロード (.md)
+                            </button>
+                        </div>
 
+                        <div className="download-card">
+                            <div className="download-card-icon">🎨</div>
+                            <h4 className="download-card-title">デザインガイド</h4>
+                            <p className="download-card-desc">
+                                参考元PDFのデザイン情報をまとめたガイド
+                            </p>
+                            <button className="btn btn-secondary" onClick={downloadDesignGuide}>
+                                ダウンロード (.md)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            {/* Image Preview */}
+            {images.length > 0 && (
+                <div className="download-section image-preview-section">
+                    <h3 className="download-section-title">🖼️ 添付画像プレビュー ({images.length}枚)</h3>
+                    <p className="download-description">これらの画像はPDFに含まれます</p>
                     <div className="image-export-grid">
                         {images.map((img, i) => (
                             <div key={i} className="image-export-item">
@@ -142,12 +164,6 @@ export default function MarkdownPreview({ formData, chapters, errors }) {
                                     <span className="image-export-label">{img.label}</span>
                                     <span className="image-export-filename">{img.fileName}</span>
                                 </div>
-                                <button
-                                    className="btn btn-secondary btn-sm"
-                                    onClick={() => downloadImage(img)}
-                                >
-                                    💾
-                                </button>
                             </div>
                         ))}
                     </div>
