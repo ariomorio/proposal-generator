@@ -79,10 +79,10 @@ const defaultFormData = {
             { title: '掲載', description: '' },
         ],
         paymentMethods: [
-            { method: '現金手渡し', note: 'PayPayでのお支払いも可能。来店時にお支払い。' },
-            { method: '振込み', note: '請求書をメールでお送りします。指定口座へお振込みください。手数料は飲食店様負担でお願いします。' },
+            { method: '', note: '' },
+            { method: '', note: '' },
         ],
-        note: '※取材時の飲食代はお店にてご負担お願いします。',
+        note: '',
     },
     contact: {
         email: '',

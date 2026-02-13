@@ -80,7 +80,7 @@ export default function FollowerForm({ data, onChange, errors = {} }) {
                         <label className="form-label">上位5地域</label>
                         {data.regions.map((r, i) => (
                             <div key={i} className="region-row">
-                                <input className="form-input" placeholder={`地域名 (例: 福岡市)`}
+                                <input className="form-input" placeholder={`地域名 (例: 東京都)`}
                                     value={r.name} onChange={(e) => updateRegion(i, 'name', e.target.value)} />
                                 <input className="form-input" type="number" min="0" max="100"
                                     placeholder="%" value={r.percentage || ''}
@@ -96,7 +96,7 @@ export default function FollowerForm({ data, onChange, errors = {} }) {
 
                 <div className="form-group">
                     <label className="form-label">備考（任意）</label>
-                    <textarea className="form-textarea" placeholder="例: 台湾・香港(7％程度)など海外フォロワーも保有し、訪日客への訴求も可能"
+                    <textarea className="form-textarea" placeholder="例: 海外フォロワーも保有し、訪日客への訴求も可能"
                         value={data.followerNote || ''} onChange={(e) => update('followerNote', e.target.value)} />
                 </div>
             </div>

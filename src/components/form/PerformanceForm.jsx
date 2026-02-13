@@ -86,7 +86,7 @@ export default function PerformanceForm({ data, onChange, errors = {} }) {
 
                 <div className="form-group">
                     <label className="form-label">訴求文（任意）</label>
-                    <textarea className="form-textarea" placeholder="例: 福岡在住の30代〜50代の働く人に向け購買意欲の高い層へのアプローチが可能"
+                    <textarea className="form-textarea" placeholder="例: 20代〜40代の購買意欲の高い層へのアプローチが可能"
                         value={data.appealText} onChange={(e) => update('appealText', e.target.value)} />
                 </div>
             </div>
